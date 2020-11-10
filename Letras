@@ -1,0 +1,152 @@
+#include "p16F887.inc"   ; TODO INSERT CONFIG CODE HERE USING CONFIG BITS GENERATOR
+ 	__CONFIG	_CONFIG1,	_INTRC_OSC_NOCLKOUT & _WDT_OFF & _PWRTE_OFF & _MCLRE_ON & _CP_OFF & _CPD_OFF & _BOR_OFF & _IESO_ON & _FCMEN_ON & _LVP_OFF 
+ 	__CONFIG	_CONFIG2,	_BOR40V & _WRT_OFF
+
+RES_VECT  CODE    0x0000            ; processor reset vector
+    GOTO    START                   ; go to beginning of program
+
+MAIN_PROG CODE                      ; let linker place main program
+i equ 0x30        ;variable i en la localidad 0x30
+j equ 0x31
+k equ 0x32
+l equ 0x33
+cuenta equ 0x34
+ 
+START
+
+    BANKSEL PORTA ;
+    CLRF PORTA ;Init PORTA
+    BANKSEL ANSEL ;
+    CLRF ANSEL ;digital I/O
+    CLRF ANSELH
+    BANKSEL TRISA ;
+    CLRF TRISA
+    CLRF TRISB
+    CLRF TRISC
+    CLRF TRISD
+    CLRF TRISE
+    BCF STATUS,RP1
+    BCF STATUS,RP0
+    CLRF PORTA
+    CLRF PORTB
+    CLRF PORTC
+    CLRF PORTD
+    
+INICIO
+    MOVLW d'30'
+    MOVWF cuenta
+    A
+	movlw b'01111111'
+	movwf PORTB ;Filas
+	movlw b'00011000'
+	movwf PORTD ; Columnas
+	call tiempo1
+
+	movlw b'10111111'
+	movwf PORTB ;Filas
+	movlw b'00100100'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	movlw b'11000000'
+	movwf PORTB ;Filas
+	movlw b'01000010'
+	movwf PORTD ; Columnas
+	call tiempo1
+    
+	movlw b'11111011'
+	movwf PORTB ;Filas
+	movlw b'01111110'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	DECFSZ cuenta,1
+	GOTO A
+    MOVLW d'30'
+    MOVWF cuenta
+    
+     Ese
+	movlw b'10111111'
+	movwf PORTB ;Filas
+	movlw b'00111100'
+	movwf PORTD ; Columnas
+	call tiempo1
+
+	movlw b'11011111'
+	movwf PORTB ;Filas
+	movlw b'01000000'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	movlw b'11101111'
+	movwf PORTB ;Filas
+	movlw b'00111000'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	movlw b'11110111'
+	movwf PORTB ;Filas
+	movlw b'00000100'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	movlw b'11111011'
+	movwf PORTB ;Filas
+	movlw b'01111000'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	DECFSZ cuenta,1
+	GOTO Ese
+    MOVLW d'30'
+    MOVWF cuenta
+    
+    Al
+	movlw b'01111111'
+	movwf PORTB ;Filas
+	movlw b'00110000'
+	movwf PORTD ; Columnas
+	call tiempo1
+
+	movlw b'10111111'
+	movwf PORTB ;Filas
+	movlw b'01001000'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	movlw b'11000000'
+	movwf PORTB ;Filas
+	movlw b'10000100'
+	movwf PORTD ; Columnas
+	call tiempo1
+    
+	movlw b'11111011'
+	movwf PORTB ;Filas
+	movlw b'11111100'
+	movwf PORTD ; Columnas
+	call tiempo1
+	
+	DECFSZ cuenta,1
+	GOTO Al
+    
+    GOTO INICIO
+    
+    tiempo1:
+    MOVLW d'1'
+    MOVWF i
+loopi: 
+    MOVLW d'8'
+    MOVWF j
+looph:
+    MOVLW d'255'	            
+    MOVWF k
+    nop
+    DECFSZ k
+    GOTO $-1
+    DECFSZ j
+    GOTO looph
+    DECFSZ i
+    GOTO loopi
+    return
+    
+    END
